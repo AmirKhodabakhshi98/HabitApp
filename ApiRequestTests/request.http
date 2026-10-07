@@ -1,0 +1,14 @@
+POST http://localhost:8080/api/habit
+Content-Type: application/json
+
+{
+  "equipment": "Dumbbells",
+  "name": "Bicep Curls",
+  "minDurationMinutes": 10,
+  "maxDurationMinutes": 20,
+  "normalDurationMinutes": 15,
+  "category": "Strength",
+  "location": "Home",
+  "recurrenceType": "WEEKLY",
+  "recurrenceValue": 3
+}

@@ -3,8 +3,6 @@ package com.HabitApp.HabitApp.Habit;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Table(name="habits")
 public class Habit {
@@ -12,40 +10,54 @@ public class Habit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true) //throwa/visa nånstans namnet finns
     private String name;
-    @Column(name = "min_duration_minutes")
-    private int minDurationMinutes;
-    @Column(name = "max_duration_minutes")
-    private int maxDurationMinutes;
-    @Column(name = "normal_duration_minutes")
-    private int normalDurationMinutes;
+
     private String category;
     private String location;
     private String equipment;
-    @Column(name = "recurrence_type")
-    private String recurrenceType;
-    @Column(name = "recurrence_value")
-    private int recurrenceValue;
 
-    public Habit() {
-        this.name = name;
-    }
+    @Column(name = "normal_duration_minutes")
+    private Integer normalDurationMinutes;
+    @Column(name = "min_duration_minutes")
+    private Integer minDurationMinutes;
+    @Column(name = "max_duration_minutes")
+    private Integer maxDurationMinutes;
+
+
+    @Column(name = "recurrence_type")
+    private RecurrenceTypes recurrenceType = RecurrenceTypes.DEFAULT;
+    @Column(name = "recurrence_value")
+    private Integer recurrenceValue;
+
+    public Habit() {}
 
     public Habit(String name) {
         this.name = name;
     }
 
-    public Habit(String equipment, String name, int minDurationMinutes, int maxDurationMinutes, int normalDurationMinutes, String category, String location, String recurrenceType, int recurrenceValue) {
-        this.equipment = equipment;
-        this.name = name;
-        this.minDurationMinutes = minDurationMinutes;
-        this.maxDurationMinutes = maxDurationMinutes;
-        this.normalDurationMinutes = normalDurationMinutes;
-        this.category = category;
-        this.location = location;
-        this.recurrenceType = recurrenceType;
-        this.recurrenceValue = recurrenceValue;
+    public Habit(String name, String category, String location, String equipment, Integer normalDurationMinutes, Integer minDurationMinutes, Integer maxDurationMinutes,  RecurrenceTypes recurrenceType, Integer recurrenceValue) {
+        setName(name);
+        setCategory(category);
+        setLocation(location);
+        setEquipment(equipment);
+        setNormalDurationMinutes(normalDurationMinutes);
+        setMinDurationMinutes(minDurationMinutes);
+        setMaxDurationMinutes(maxDurationMinutes);
+        setRecurrenceType(recurrenceType);
+        setRecurrenceValue(recurrenceValue);
+    }
+
+    private String emptyToNull(String value){
+        return value == null || value.isBlank()
+                ? null
+                : value;
+    }
+
+    private Integer negativeToNull(Integer value){
+        return value == null || value < 0
+                ? null
+                : value;
     }
 
     public Long getId() {
@@ -64,28 +76,28 @@ public class Habit {
         this.name = name;
     }
 
-    public int getMinDurationMinutes() {
+    public Integer getMinDurationMinutes() {
         return minDurationMinutes;
     }
 
-    public void setMinDurationMinutes(int minDurationMinutes) {
-        this.minDurationMinutes = minDurationMinutes;
+    public void setMinDurationMinutes(Integer minDurationMinutes) {
+        this.minDurationMinutes = negativeToNull(minDurationMinutes);
     }
 
-    public int getMaxDurationMinutes() {
+    public Integer getMaxDurationMinutes() {
         return maxDurationMinutes;
     }
 
-    public void setMaxDurationMinutes(int maxDurationMinutes) {
-        this.maxDurationMinutes = maxDurationMinutes;
+    public void setMaxDurationMinutes(Integer maxDurationMinutes) {
+        this.maxDurationMinutes = negativeToNull(maxDurationMinutes);
     }
 
-    public int getNormalDurationMinutes() {
+    public Integer getNormalDurationMinutes() {
         return normalDurationMinutes;
     }
 
-    public void setNormalDurationMinutes(int normalDurationMinutes) {
-        this.normalDurationMinutes = normalDurationMinutes;
+    public void setNormalDurationMinutes(Integer normalDurationMinutes) {
+        this.normalDurationMinutes = negativeToNull(normalDurationMinutes);
     }
 
     public String getCategory() {
@@ -93,7 +105,7 @@ public class Habit {
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        this.category = emptyToNull(category);
     }
 
     public String getLocation() {
@@ -101,7 +113,7 @@ public class Habit {
     }
 
     public void setLocation(String location) {
-        this.location = location;
+        this.location = emptyToNull(location);
     }
 
     public String getEquipment() {
@@ -109,22 +121,22 @@ public class Habit {
     }
 
     public void setEquipment(String equipment) {
-        this.equipment = equipment;
+        this.equipment = emptyToNull(equipment);
     }
 
-    public String getRecurrenceType() {
+    public RecurrenceTypes getRecurrenceType() {
         return recurrenceType;
     }
 
-    public void setRecurrenceType(String recurrenceType) {
+    public void setRecurrenceType(RecurrenceTypes recurrenceType) {
         this.recurrenceType = recurrenceType;
     }
 
-    public int getRecurrenceValue() {
+    public Integer getRecurrenceValue() {
         return recurrenceValue;
     }
 
-    public void setRecurrenceValue(int recurrenceValue) {
-        this.recurrenceValue = recurrenceValue;
+    public void setRecurrenceValue(Integer recurrenceValue) {
+        this.recurrenceValue = negativeToNull(recurrenceValue);
     }
 }

@@ -16,7 +16,7 @@ public class HabitApiClient {
         this.client = RestClient.create(baseUrl);
     }
 
-    public List<Habit> findAll() {
+    public List<Habit> getAll() {
         return client.get().uri("/api/habit/all")
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<Habit>>() {});
@@ -36,8 +36,8 @@ public class HabitApiClient {
                 .body(Habit.class);
     }
 
-    public void delete(String name) {
-        client.delete().uri("/api/habit/{name}", name)
+    public void delete(Habit habit) {
+        client.delete().uri("/api/habit/{name}", habit.getName())
                 .retrieve()
                 .toBodilessEntity();
     }

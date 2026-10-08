@@ -1,13 +1,13 @@
-package com.HabitApp.HabitApp.View;
+package com.HabitApp.HabitApp.View.HabitView;
 
 import com.HabitApp.HabitApp.Habit.Habit;
 import com.HabitApp.HabitApp.Habit.RecurrenceTypes;
+import com.HabitApp.HabitApp.View.UIConstants;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.IntegerField;
 import com.vaadin.flow.component.textfield.TextField;
-import org.springframework.stereotype.Component;
 
 import java.util.function.Consumer;
 
@@ -39,6 +39,7 @@ public class HabitForm extends FormLayout {
                 new FormLayout.ResponsiveStep("1200px", 4)
         );
         hide();
+        getStyle().set("border", "1px solid " + UIConstants.OUTLINE);
 
         nameCol.setRequired(true);
         nameCol.setErrorMessage("Please enter a name");

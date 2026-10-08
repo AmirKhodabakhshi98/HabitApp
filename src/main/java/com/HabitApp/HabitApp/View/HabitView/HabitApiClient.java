@@ -1,4 +1,4 @@
-package com.HabitApp.HabitApp.View;
+package com.HabitApp.HabitApp.View.HabitView;
 
 import com.HabitApp.HabitApp.Habit.Habit;
 import org.springframework.beans.factory.annotation.Value;

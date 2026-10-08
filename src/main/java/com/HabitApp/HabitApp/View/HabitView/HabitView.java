@@ -1,8 +1,11 @@
-package com.HabitApp.HabitApp.View;
+package com.HabitApp.HabitApp.View.HabitView;
 import com.HabitApp.HabitApp.ExternalApi.Quote;
-import com.HabitApp.HabitApp.ExternalApi.externalApiService;
+import com.HabitApp.HabitApp.ExternalApi.ExternalApiService;
 import com.HabitApp.HabitApp.Habit.Habit;
+import com.HabitApp.HabitApp.View.UIConstants;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
@@ -10,51 +13,48 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.stereotype.Component;
 
 import java.util.Objects;
 
-@Route("")
+@Component
 public class HabitView extends VerticalLayout {
 
     private final HabitApiClient api;
-    private final externalApiService externalApiService;
     private Grid<Habit> grid;
     private HabitForm editForm;
-    private Quote quote; //ev spara i db? hämta dagens om d nt finns?
+
     private Habit current;
-    String nasaImageUrl;
+    private final String componentBackgroundColor = "black";
 
-    //quote och img borde sen decentraliseras uppåt till nån main view när jag gör fler sidor
 
-    public HabitView(HabitApiClient api, externalApiService externalApiService) {
+    public HabitView(HabitApiClient api) {
         this.api = api;
         this.grid = initGrid();
+        setWidthFull();
 
-        this.externalApiService = externalApiService;
-        quote = externalApiService.getTodaysZenQuote();
-        nasaImageUrl = externalApiService.getNasaImage().url(); // adjust to your ExternalImage accessor
-        if (!nasaImageUrl.isBlank()) {
-            getStyle()
-                    .set("background-image", "url('" + nasaImageUrl + "')")
-                    .set("background-size", "cover")
-                    .set("background-position", "center")
-                    .set("background-repeat", "no-repeat");
-        }
-        updateGrid();
-
-
-        this.editForm = new HabitForm();
-        editForm.setSaveListener(this::saveHabit);
-        editForm.setCancelListener(editForm::hide);
+        initEditForm();
 
         Button newHabitButton = initNewHabitButton();
-
-        VerticalLayout quoteLayout = getQuoteLayout();
-        quoteLayout.setAlignItems(FlexComponent.Alignment.CENTER);
-
-        add(quoteLayout, newHabitButton, grid, editForm);
+        getStyle().set("border", "1px solid " + UIConstants.OUTLINE);
+        add(newHabitButton, grid, editForm);
     }
 
+    public void show(){
+        updateGrid();
+        setVisible(true);
+    }
+
+    public void hide(){
+        setVisible(false);
+    }
+
+    private void initEditForm(){
+        this.editForm = new HabitForm();
+     //   editForm.getStyle().set("background-color", "white");
+        editForm.setSaveListener(this::saveHabit);
+        editForm.setCancelListener(editForm::hide);
+    }
 
 
 
@@ -63,6 +63,7 @@ public class HabitView extends VerticalLayout {
         newHabitButton.addClickListener(event -> {
             editForm.edit(new Habit());
         });
+        newHabitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         return newHabitButton;
     }
 
@@ -100,13 +101,6 @@ public class HabitView extends VerticalLayout {
         return grid;
     }
 
-    private VerticalLayout getQuoteLayout(){
-        H3 quoteText = new H3(quote.quote());
-        quoteText.getStyle().set("font-style", "italic");
-        Span authorName = new Span("- "+quote.author());
-        return new VerticalLayout(quoteText, authorName);
-
-    }
 
     private void updateGrid(){
         grid.setItems(api.getAll());

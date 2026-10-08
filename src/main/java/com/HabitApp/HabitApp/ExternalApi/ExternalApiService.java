@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class externalApiService {
+public class ExternalApiService {
 
     private final ZenQuotesService zenQuotesService;
     private final NasaImagesService nasaImagesService;
 
-    public externalApiService(ZenQuotesService zenQuotesService, NasaImagesService nasaImagesService) {
+    public ExternalApiService(ZenQuotesService zenQuotesService, NasaImagesService nasaImagesService) {
         this.zenQuotesService = zenQuotesService;
         this.nasaImagesService = nasaImagesService;
     }

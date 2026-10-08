@@ -11,6 +11,7 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinSession;
 
 @Route("")
 public class MainView extends FlexLayout {
@@ -23,15 +24,24 @@ public class MainView extends FlexLayout {
     private SideBar sideBar;
     private HabitView habitView;
     private VerticalLayout quoteLayout;
+    private double backgroundOverlayAlpha = 0.25;
+
+    private VaadinSession vaadinSession;
 
     public MainView(ExternalApiService externalApiService, HabitView habitView) {
-        this.externalApiService = externalApiService;
-        quote = externalApiService.getTodaysZenQuote();
-        nasaImageUrl = externalApiService.getNasaImage().url();
+        this.externalApiService = externalApiService; //flytta sen så den inte hämtas hela tiden(refresh,restart)
+
+        //quote = externalApiService.getTodaysZenQuote();
+        quote = externalApiService.getRandomZenQuote();
+       // nasaImageUrl = externalApiService.getTodaysNasaImage().url();
+        nasaImageUrl = externalApiService.getRandomNasaImage().url();
         setBackgroundImage(nasaImageUrl);
+
+
         this.habitView  = habitView;
 
         contentArea = initContentArea();
+        reset();
         quoteLayout = getQuoteLayout();
         sideBar = initSideBar();
 
@@ -39,6 +49,7 @@ public class MainView extends FlexLayout {
         setWidthFull();
         setHeight("100vh");
         getStyle().set("box-sizing", "border-box");
+
     }
 
     private Div initContentArea() {
@@ -47,8 +58,13 @@ public class MainView extends FlexLayout {
                 .set("display", "flex")
                 .set("justify-content", "center")
                 .set("align-items", "center")
-                .set("margin-bottom", "50px")
-                .set("background-color", "yellow")//UIConstants.BACKGROUND_COLOR)
+                .set("flex", "1")
+                .set("min-width", "0")
+                .set("align-self", "stretch")
+                .set("margin", "clamp(110px, 15vh, 180px) clamp(16px, 4vw, 60px) clamp(16px, 4vh, 50px)")
+                .set("box-sizing", "border-box")
+                .set("overflow", "auto")          // låta skrolla inne
+                .set("background-color", UIConstants.BACKGROUND_COLOR)
         ;
         return contentArea;
     }
@@ -109,13 +125,15 @@ public class MainView extends FlexLayout {
     }
 
 
+
     //black default
     private void setBackgroundImage(String url) {
+        String overlay = "rgba(0,0,0," + backgroundOverlayAlpha +")";
 
         if (!url.isBlank()) {
             UI.getCurrent().getElement().getStyle()
                     .set("background-image",
-                            "linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)), url('" + url + "')")
+                            "linear-gradient(" + overlay + ", " + overlay + "), url('" + url + "')")
                     .set("background-size", "cover")
                     .set("background-position", "center")
                     .set("background-attachment", "fixed")

@@ -12,7 +12,7 @@ class NasaImagesConfig {
     @Bean
     protected RestClient nasaImagesRestClient(RestClient.Builder builder) {
         return builder
-                .baseUrl("https://science.nasa.gov/wp-json/wp/v2/apod-basic/")
+                .baseUrl("https://science.nasa.gov/wp-json/wp/v2/apod-basic")
                 .defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }

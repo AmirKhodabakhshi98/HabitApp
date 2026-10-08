@@ -32,7 +32,7 @@ public class HabitView extends VerticalLayout {
         this.api = api;
         this.grid = initGrid();
         setWidthFull();
-
+        setHeightFull();
         initEditForm();
 
         Button newHabitButton = initNewHabitButton();
@@ -63,7 +63,7 @@ public class HabitView extends VerticalLayout {
         newHabitButton.addClickListener(event -> {
             editForm.edit(new Habit());
         });
-        newHabitButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+       // newHabitButton.addThemeVariants();
         return newHabitButton;
     }
 

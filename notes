@@ -1,0 +1,15 @@
+ny version kör:
+docker compose down
+docker compose up --build
+
+för readme sen, användare kör:
+git clone <your-repo-url>
+cd HabitApp
+docker compose up --build
+http://localhost:8080
+
+
+Uninstall
+docker compose down -v --rmi all
+docker builder prune
+Then delete the folder.

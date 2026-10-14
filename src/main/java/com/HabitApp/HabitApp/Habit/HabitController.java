@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(path ="api/habit")
+@RequestMapping(path ="/api/habit")
 public class HabitController {
 
     private final HabitService habitService;
@@ -29,6 +29,32 @@ public class HabitController {
         return habitService.getAllHabits();
     }
 
+
+    @GetMapping("/category")
+    public List<Habit> getHabitsByCategory(@RequestParam String category) {
+        return habitService.findByCategory(category);
+    }
+
+    @GetMapping("/location")
+    public List<Habit> getHabitsByLocation(@RequestParam String location) {
+        return habitService.findByLocation(location);
+    }
+
+
+    @GetMapping("/equipment")
+    public List<Habit> getHabitsByEquipment(@RequestParam String equipment) {
+        return habitService.findByEquipment(equipment);
+    }
+
+    @GetMapping("/recurrence")
+    public List<Habit> getHabitsByRecurrence(@RequestParam RecurrenceTypes recurrence) {
+        return habitService.findByRecurrence(recurrence);
+    }
+
+    @GetMapping("/distinct/{colName}")
+    public List<Object> getDistinctColNames(@PathVariable String colName) {
+        return habitService.findByDistinctColValues(colName);
+    }
 
     @PostMapping
     public ResponseEntity<Habit> addHabit(@RequestBody Habit habit){

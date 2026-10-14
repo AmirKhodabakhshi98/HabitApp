@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface HabitRepository extends JpaRepository<Habit, Long> {
+public interface HabitRepository extends JpaRepository<Habit, Long>,
+HabitRepositoryAdditional{
     //get by name
     //get by category
     //get by location
@@ -20,14 +21,16 @@ public interface HabitRepository extends JpaRepository<Habit, Long> {
     Optional<Habit> findByName(String name);
     List<Habit> findByCategory(String category);
     List<Habit> findByLocation(String location);
+
   //  List<Habit> findByMinTime(int minTime);
  //   List<Habit> findByMaxTime(int maxTime);
  //   List<Habit> findByNormalTime(int normalTime);
  //   List<Habit> findByMinMaxDurationMinutes(int minDurationMinutes, int maxDurationMinutes);
     List<Habit> findByEquipment(String equipment);
+    List<Habit> findByRecurrenceType(RecurrenceTypes recurrence);
 
 
-    Optional<Habit> findById(Long id);
+
 
     long deleteByName(String name);
 

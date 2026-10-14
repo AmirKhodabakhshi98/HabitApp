@@ -12,16 +12,19 @@ public class SideBar extends VerticalLayout {
     public SideBar(Consumer<Pages> onMenuClick) {
         Button homeButton = new Button("Home");
         Button habitsButton = new Button("Habits");
+        Button toDoButton = new Button("To Do");
 
         H2 title = new H2("Habits App");
         title.getStyle().set("color", UIConstants.TEXT_COLOR_PRIMARY);
         homeButton.setWidthFull();
         habitsButton.setWidthFull();
+        toDoButton.setWidthFull();
 
         homeButton.addClickListener(e -> {onMenuClick.accept(Pages.HOME);});
         habitsButton.addClickListener(e -> onMenuClick.accept(Pages.HABITS));
+        toDoButton.addClickListener(e->onMenuClick.accept(Pages.ToDo));
 
-        add(title, homeButton, habitsButton);
+        add(title, homeButton, habitsButton, toDoButton);
 
         setWidth("clamp(180px, 16vw, 280px");
         setHeight(null);

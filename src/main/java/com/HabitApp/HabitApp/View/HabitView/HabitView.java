@@ -1,18 +1,11 @@
 package com.HabitApp.HabitApp.View.HabitView;
-import com.HabitApp.HabitApp.ExternalApi.Quote;
-import com.HabitApp.HabitApp.ExternalApi.ExternalApiService;
 import com.HabitApp.HabitApp.Habit.Habit;
+import com.HabitApp.HabitApp.View.ApiClient;
 import com.HabitApp.HabitApp.View.UIConstants;
-import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Span;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.router.Route;
 import org.springframework.stereotype.Component;
 
 import java.util.Objects;
@@ -20,7 +13,7 @@ import java.util.Objects;
 @Component
 public class HabitView extends VerticalLayout {
 
-    private final HabitApiClient api;
+    private final ApiClient api;
     private Grid<Habit> grid;
     private HabitForm editForm;
 
@@ -28,7 +21,7 @@ public class HabitView extends VerticalLayout {
     private final String componentBackgroundColor = "black";
 
 
-    public HabitView(HabitApiClient api) {
+    public HabitView(ApiClient api) {
         this.api = api;
         this.grid = initGrid();
         setWidthFull();
@@ -103,15 +96,15 @@ public class HabitView extends VerticalLayout {
 
 
     private void updateGrid(){
-        grid.setItems(api.getAll());
+        grid.setItems(api.getAllHabits());
     }
 
 
     private void saveHabit(Habit habit) {
         if (habit.getId() == null) {
-            api.create(habit);
+            api.createHabit(habit);
         } else {
-            api.update(habit);
+            api.updateHabit(habit);
         }
         updateGrid();
         editForm.setVisible(false);
@@ -130,7 +123,7 @@ public class HabitView extends VerticalLayout {
         return habit.getRecurrenceType().getLabel();
     }
 
-    private String formatDuration(Habit habit) {
+    public String formatDuration(Habit habit) {
         Integer normal = habit.getNormalDurationMinutes();
         Integer min = habit.getMinDurationMinutes();
         Integer max = habit.getMaxDurationMinutes();

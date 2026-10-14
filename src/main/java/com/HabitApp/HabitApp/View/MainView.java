@@ -3,15 +3,22 @@ package com.HabitApp.HabitApp.View;
 
 import com.HabitApp.HabitApp.ExternalApi.ExternalApiService;
 import com.HabitApp.HabitApp.ExternalApi.Quote;
+import com.HabitApp.HabitApp.View.HabitTrackerView.ToDoView;
 import com.HabitApp.HabitApp.View.HabitView.HabitView;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.Layout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
+
+import javax.swing.text.View;
+import java.util.LinkedList;
+import java.util.List;
 
 @Route("")
 public class MainView extends FlexLayout {
@@ -23,12 +30,15 @@ public class MainView extends FlexLayout {
     private String nasaImageUrl;
     private SideBar sideBar;
     private HabitView habitView;
+    private ToDoView toDoView;
     private VerticalLayout quoteLayout;
     private double backgroundOverlayAlpha = 0.25;
+    private List<Class<? extends Component>> views;
 
     private VaadinSession vaadinSession;
 
-    public MainView(ExternalApiService externalApiService, HabitView habitView) {
+    public MainView(ExternalApiService externalApiService, HabitView habitView,
+                    ToDoView toDoView) {
         this.externalApiService = externalApiService; //flytta sen så den inte hämtas hela tiden(refresh,restart)
 
         //quote = externalApiService.getTodaysZenQuote();
@@ -39,13 +49,14 @@ public class MainView extends FlexLayout {
 
 
         this.habitView  = habitView;
+        this.toDoView = toDoView;
 
         contentArea = initContentArea();
         reset();
         quoteLayout = getQuoteLayout();
         sideBar = initSideBar();
 
-        add(quoteLayout,  sideBar, contentArea);
+        add(quoteLayout, sideBar, contentArea);
         setWidthFull();
         setHeight("100vh");
         getStyle().set("box-sizing", "border-box");
@@ -79,7 +90,6 @@ public class MainView extends FlexLayout {
             reset();
             System.err.println("reset");
            switch (page) {
-
                case HOME:
                    System.err.println("home");
                    break;
@@ -87,6 +97,11 @@ public class MainView extends FlexLayout {
                    System.err.println("habits");
                    setContentArea(habitView);
                    habitView.show();
+                   break;
+               case ToDo:
+                   setContentArea(toDoView);
+                   toDoView.show();
+                   System.err.println("to do");
                    break;
            }
 
@@ -97,6 +112,7 @@ public class MainView extends FlexLayout {
         contentArea.removeAll();
         contentArea.setVisible(false);
         habitView.hide();
+        toDoView.hide();
     }
 
 

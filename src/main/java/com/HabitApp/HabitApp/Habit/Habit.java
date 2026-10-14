@@ -25,6 +25,7 @@ public class Habit {
     private Integer maxDurationMinutes;
 
 
+    @Enumerated(EnumType.STRING) //så db nt byter t int
     @Column(name = "recurrence_type")
     private RecurrenceTypes recurrenceType = RecurrenceTypes.DEFAULT;
     @Column(name = "recurrence_value")

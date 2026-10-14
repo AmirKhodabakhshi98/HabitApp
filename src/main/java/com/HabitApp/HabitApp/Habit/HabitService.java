@@ -3,11 +3,13 @@ package com.HabitApp.HabitApp.Habit;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Component
+@Service
+
 public class HabitService {
 
     @Autowired
@@ -41,20 +43,28 @@ public class HabitService {
         return habitRepository.findByEquipment(equipment);
     }
 
+    public List<Habit> findByRecurrence(RecurrenceTypes recurrence) {
+        return habitRepository.findByRecurrenceType(recurrence);
+    }
+
   //  public List<Habit> findByMinMaxDurationMinutes(int minDurationMinutes, int maxDurationMinutes) {
     //    return habitRepository.findByMinMaxDurationMinutes(minDurationMinutes, maxDurationMinutes);
   //  }
+
+    public List<Object> findByDistinctColValues(String colName) {
+        return habitRepository.findByDistinctColValues(colName);
+    }
 
     @Transactional
     public boolean deleteByName(String name) {
         return habitRepository.deleteByName(name) > 0;
     }
-
+    @Transactional
     public Habit addHabit(Habit habit){
         habitRepository.save(habit);
         return habit;
     }
-
+    @Transactional
     public Habit updateHabit(Habit updatedHabit){
         Optional<Habit> optionalHabit = habitRepository.findById(updatedHabit.getId());
 
